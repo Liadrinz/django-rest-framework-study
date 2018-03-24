@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from snippets.models import Snippet, LANGUAGE_CHOICES, STYLE_CHOICES
+from snippets.models import Snippet
 from django.contrib.auth.models import User
 
 #this module uses Serializers inherited from serializer.ModelSerializer
@@ -10,11 +10,9 @@ class SnippetSerializer(serializers.HyperlinkedModelSerializer):
     #if not, the owner can be changed randomly and the value of 'owner' in JSON is the owner_id
     owner=serializers.ReadOnlyField(source='owner.username')
 
-    highlight=serializers.HyperlinkedIdentityField(view_name='snippet-highlight',format='html')
-
     class Meta:
         model=Snippet #the following fields are built based on class Snippet in models
-        fields=('url','id','highlight','title','code','linenos','language','style','owner')
+        fields=('url','id','title','code','linenos','language','style','owner')
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -24,5 +22,3 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model=User
         fields=('url','id','username','snippets')
-
-
